@@ -1,0 +1,74 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "role": "admin",
+      "name": "Admin User",
+      "avatar": "https://res.cloudinary.com/dhzekqgvu/image/upload/v1754053167/user_rjrf75.jpg",
+      "email": "admin@example.com",
+      "password": "admin123",
+      "isActive": false,
+      "isLoggedIn": false,
+      "createdAt": "2025-11-10T04:00:00Z",
+      "lastLogin": "2025-11-10T04:00:00Z"
+    },
+    {
+      "id": 2,
+      "role": "agent",
+      "name": "Agent One",
+      "avatar": "https://res.cloudinary.com/dhzekqgvu/image/upload/v1741027857/samples/man-portrait.jpg",
+      "email": "agent1@example.com",
+      "password": "agent123",
+      "isActive": false,
+      "isLoggedIn": true,
+      "createdAt": "2025-11-10T04:05:00Z",
+      "lastLogin": "2025-11-10T04:05:00Z"
+    },
+    {
+      "id": 3,
+      "role": "agent",
+      "name": "Agent Two",
+      "avatar": "https://res.cloudinary.com/dhzekqgvu/image/upload/v1762860201/brandon_qjyzsr.jpg",
+      "email": "agent2@example.com",
+      "password": "agent256",
+      "isActive": false,
+      "isLoggedIn": false,
+      "createdAt": "2025-11-10T04:10:00Z",
+      "lastLogin": "2025-11-10T04:10:00Z"
+    }
+  ],
+  "cards": [
+    {
+      "title": "Total Products",
+      "value": "26,154",
+      "icon": "Package",
+      "change": "25%",
+      "changeIcon": "TrendingUp",
+      "color": "bg-blue-500/20 text-blue-500"
+    },
+    {
+      "title": "Total Paid Orders",
+      "value": "16,000",
+      "icon": "DollarSign",
+      "change": "12%",
+      "changeIcon": "TrendingUp",
+      "color": "bg-green-500/20 text-green-500"
+    },
+    {
+      "title": "Total Customers",
+      "value": "15,400",
+      "icon": "Users",
+      "change": "15%",
+      "changeIcon": "TrendingUp",
+      "color": "bg-yellow-500/20 text-yellow-500"
+    },
+    {
+      "title": "Total Sales",
+      "value": "12,340",
+      "icon": "CreditCard",
+      "change": "19%",
+      "changeIcon": "TrendingUp",
+      "color": "bg-red-500/20 text-red-500"
+    }
+  ]
+}
