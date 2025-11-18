@@ -1,5 +1,15 @@
 {
   "compilerOptions": {
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
+    "exactOptionalPropertyTypes": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "noImplicitReturns": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",
     "useDefineForClassFields": true,

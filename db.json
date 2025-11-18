@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "role": "admin",
       "name": "Admin User",
       "avatar": "https://res.cloudinary.com/dhzekqgvu/image/upload/v1754053167/user_rjrf75.jpg",
@@ -13,7 +13,7 @@
       "lastLogin": "2025-11-10T04:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "role": "agent",
       "name": "Agent One",
       "avatar": "https://res.cloudinary.com/dhzekqgvu/image/upload/v1741027857/samples/man-portrait.jpg",
@@ -25,7 +25,7 @@
       "lastLogin": "2025-11-10T04:05:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "role": "agent",
       "name": "Agent Two",
       "avatar": "https://res.cloudinary.com/dhzekqgvu/image/upload/v1762860201/brandon_qjyzsr.jpg",
@@ -44,7 +44,8 @@
       "icon": "Package",
       "change": "25%",
       "changeIcon": "TrendingUp",
-      "color": "bg-blue-500/20 text-blue-500"
+      "color": "bg-blue-500/20 text-blue-500",
+      "id": "3594"
     },
     {
       "title": "Total Paid Orders",
@@ -52,7 +53,8 @@
       "icon": "DollarSign",
       "change": "12%",
       "changeIcon": "TrendingUp",
-      "color": "bg-green-500/20 text-green-500"
+      "color": "bg-green-500/20 text-green-500",
+      "id": "132b"
     },
     {
       "title": "Total Customers",
@@ -60,7 +62,8 @@
       "icon": "Users",
       "change": "15%",
       "changeIcon": "TrendingUp",
-      "color": "bg-yellow-500/20 text-yellow-500"
+      "color": "bg-yellow-500/20 text-yellow-500",
+      "id": "70d6"
     },
     {
       "title": "Total Sales",
@@ -68,7 +71,162 @@
       "icon": "CreditCard",
       "change": "19%",
       "changeIcon": "TrendingUp",
-      "color": "bg-red-500/20 text-red-500"
+      "color": "bg-red-500/20 text-red-500",
+      "id": "812b"
+    }
+  ],
+  "orders": [
+    {
+      "customer": "New Corporation MMC",
+      "products": "MacBook Pro 16\"",
+      "status": "delivered",
+      "id": "ORD-2024-001"
+    },
+    {
+      "id": "ORD-2024-002",
+      "customer": "Global Enterprises",
+      "products": "Dell XPS 15, Monitors x3",
+      "quantity": 4,
+      "date": "2024-11-11",
+      "status": "shipped",
+      "total": 8999.8,
+      "email": "orders@globalent.com",
+      "phone": "+1 (555) 234-5678",
+      "address": "456 Corporate Blvd, New York, NY 10001",
+      "payment": "Paid",
+      "notes": "Express shipping requested"
+    },
+    {
+      "id": "ORD-2024-003",
+      "customer": "StartUp Labs",
+      "products": "iPhone 15 Pro",
+      "quantity": 10,
+      "date": "2024-11-11",
+      "status": "pending",
+      "total": 11999.9,
+      "email": "admin@startuplabs.io",
+      "phone": "+1 (555) 345-6789",
+      "address": "789 Innovation Dr, Austin, TX 78701",
+      "payment": "Pending",
+      "notes": "Awaiting payment confirmation"
+    },
+    {
+      "id": "ORD-2024-004",
+      "customer": "Retail Chain Co",
+      "products": "Samsung Galaxy S24",
+      "quantity": 25,
+      "date": "2024-11-09",
+      "status": "delivered",
+      "total": 22499.75,
+      "email": "purchasing@retailchain.com",
+      "phone": "+1 (555) 456-7890",
+      "address": "321 Market St, Chicago, IL 60601",
+      "payment": "Paid",
+      "notes": "Store inventory replenishment"
+    },
+    {
+      "id": "ORD-2024-005",
+      "customer": "Design Studio Pro",
+      "products": "iPad Pro 12.9\", Apple Pencil",
+      "quantity": 3,
+      "date": "2024-11-12",
+      "status": "pending",
+      "total": 4497,
+      "email": "hello@designstudio.com",
+      "phone": "+1 (555) 567-8901",
+      "address": "654 Creative Lane, Los Angeles, CA 90012",
+      "payment": "Paid",
+      "notes": "Gift wrapped requested"
+    },
+    {
+      "id": "ORD-2024-006",
+      "customer": "Education First",
+      "products": "Chromebook x50",
+      "quantity": 50,
+      "date": "2024-11-08",
+      "status": "cancelled",
+      "total": 14999.5,
+      "email": "it@educationfirst.edu",
+      "phone": "+1 (555) 678-9012",
+      "address": "987 School Rd, Boston, MA 02108",
+      "payment": "Refunded",
+      "notes": "Budget constraints - cancelled by customer"
+    },
+    {
+      "id": "ORD-2024-007",
+      "customer": "Media Productions",
+      "products": "Sony Camera, Lenses x3",
+      "quantity": 4,
+      "date": "2024-11-11",
+      "status": "shipped",
+      "total": 9899.6,
+      "email": "gear@mediaproductions.com",
+      "phone": "+1 (555) 789-0123",
+      "address": "147 Studio Way, Miami, FL 33101",
+      "payment": "Paid",
+      "notes": "Fragile - handle with care"
+    },
+    {
+      "id": "ORD-2024-008",
+      "customer": "Finance Corp",
+      "products": "Surface Laptop 5",
+      "quantity": 15,
+      "date": "2024-11-10",
+      "status": "delivered",
+      "total": 17999.85,
+      "email": "it@financecorp.com",
+      "phone": "+1 (555) 890-1234",
+      "address": "258 Wall St, New York, NY 10005",
+      "payment": "Paid",
+      "notes": "Standard delivery completed"
+    },
+    {
+      "id": "86cd",
+      "customer": "Company ABC",
+      "products": "Iphone 25",
+      "status": "pending",
+      "quantity": 1,
+      "date": "2025-11-16T20:55:14.872Z",
+      "total": 0,
+      "email": "",
+      "phone": "",
+      "address": ""
+    },
+    {
+      "id": "835a",
+      "customer": "New Comp",
+      "products": "Redmi 25",
+      "status": "shipped",
+      "quantity": 1,
+      "date": "2025-11-16T21:01:48.085Z",
+      "total": 0,
+      "email": "",
+      "phone": "",
+      "address": ""
+    },
+    {
+      "id": "61bf",
+      "customer": "Red Comp",
+      "products": "Huawei 25",
+      "status": "delivered",
+      "quantity": 1,
+      "date": "2025-11-16T21:02:27.704Z",
+      "total": 0,
+      "email": "",
+      "phone": "",
+      "address": ""
+    },
+    {
+      "id": "5b4f",
+      "customer": "Company Samsung",
+      "products": "Samsung 25",
+      "status": "shipped",
+      "quantity": 1,
+      "date": "2025-11-16T23:02:04.189Z",
+      "total": 0,
+      "email": "",
+      "phone": "",
+      "address": ""
     }
   ]
 }

@@ -1,29 +1,27 @@
 import { overviewData, recentSalesData, topProducts } from '../constants';
-import { CreditCard, DollarSign, Package, PencilLine, Star, Trash, TrendingUp, Users, type LucideIcon } from 'lucide-react';
+import { PencilLine, Star, Trash, TrendingUp, Users } from 'lucide-react';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Card } from '@/features/dashboard/components/Card';
 import useDashboard from '@/features/dashboard/hooks/useDashboard';
-import { useTheme } from '@/features/dashboard/hooks/use-theme';
-
-const iconMap: Record<string, LucideIcon> = {
-    package: Package,
-    dollar: DollarSign,
-    users: Users,
-    'credit-card': CreditCard,
-};
-
-const colorMap: Record<string, string> = {
-    blue: 'bg-blue-500/20 text-blue-500',
-    green: 'bg-green-500/20 text-green-500',
-    yellow: 'bg-yellow-500/20 text-yellow-500',
-    red: 'bg-red-500/20 text-red-500',
-};
+import { useTheme } from '@/shared/hooks/use-theme';
+import { useIconMap } from '@/features/dashboard/hooks/useIconMap';
+import { useColorMap } from '@/features/dashboard/hooks/useColorMap';
+import { useEffect } from 'react';
+import { useLoadingSpinner } from '@/features/dashboard/hooks/useLoadingSpinner';
 
 const Dashboard = () => {
     const { theme } = useTheme();
     const { cards, isLoading } = useDashboard();
+    const { getIcon } = useIconMap();
+    const { getColor } = useColorMap();
+    const { Spinner, showSpinner, hideSpinner } = useLoadingSpinner();
 
-    if (isLoading) return <p>Loading...</p>;
+    useEffect(() => {
+        if (isLoading) showSpinner();
+        else hideSpinner();
+    }, [isLoading, showSpinner, hideSpinner]);
+
+    if (isLoading) return <>{Spinner}</>;
 
     return (
         <div>
@@ -34,12 +32,12 @@ const Dashboard = () => {
                     {cards.map((card, index) => (
                         <Card
                             key={card.id ?? index}
-                            icon={iconMap[String(card.icon)] ?? Users}
+                            icon={getIcon(String(card.icon)) ?? Users}
                             title={card.title}
                             value={card.value.toLocaleString()}
-                            change={`${card.change}%`}
+                            change={`${card.change}`}
                             changeIcon={TrendingUp}
-                            color={colorMap[card.color] ?? colorMap.blue}
+                            color={getColor(String(card.color))!}
                         />
                     ))}
                 </div>
@@ -87,17 +85,34 @@ const Dashboard = () => {
                     <section className="card-body h-75 overflow-auto p-0">
                         <ul className="divide-y divide-slate-200 dark:divide-slate-800">
                             {recentSalesData.map((sale) => (
-                                <li key={sale.id} className="flex items-center justify-between gap-x-4 py-2 pr-2">
+                                <li
+                                    key={sale.id}
+                                    className="flex items-center justify-between gap-x-4 py-3 px-2 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+                                >
                                     <figure className="flex items-center gap-x-4">
-                                        <img src={sale.image} alt={sale.name} className="size-10 shrink-0 rounded-full object-cover" />
-                                        <figcaption className="flex flex-col gap-y-2">
+                                        <img
+                                            src={sale.image}
+                                            alt={sale.name}
+                                            className="size-12 shrink-0 rounded-full object-cover ring-1 ring-slate-300 dark:ring-slate-700"
+                                        />
+                                        <figcaption className="flex flex-col">
                                             <p className="font-medium text-slate-900 dark:text-slate-50">{sale.name}</p>
                                             <p className="text-sm text-slate-600 dark:text-slate-400">{sale.email}</p>
+                                            <p className="text-xs text-slate-500 dark:text-slate-500 italic">{sale.product}</p>
                                         </figcaption>
                                     </figure>
-                                    <data value={sale.total} className="font-medium text-slate-900 dark:text-slate-50">
-                                        ${sale.total}
-                                    </data>
+
+                                    <div className="flex flex-col items-end">
+                                        <data value={sale.total} className="font-semibold text-slate-900 dark:text-slate-50">
+                                            ${sale.total.toLocaleString()}
+                                        </data>
+                                        <time dateTime={sale.date} className="text-xs text-slate-500 dark:text-slate-400">
+                                            {new Date(sale.date).toLocaleDateString('en-US', {
+                                                month: 'short',
+                                                day: 'numeric',
+                                            })}
+                                        </time>
+                                    </div>
                                 </li>
                             ))}
                         </ul>

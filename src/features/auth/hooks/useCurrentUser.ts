@@ -5,6 +5,7 @@ import type { User } from "../types";
 export const useCurrentUser = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     const fetchLoggedInUser = async () => {
@@ -13,7 +14,7 @@ export const useCurrentUser = () => {
         const data: User[] = await res.json();
 
         if (data.length > 0) {
-          setUser(data[0]);
+          setUser(data[0] ?? null);
         } else {
           setUser(null);
         }
@@ -28,5 +29,5 @@ export const useCurrentUser = () => {
     fetchLoggedInUser();
   }, []);
 
-  return { user, loading, isAuthenticated: !!user };
+  return { user, setUser, loading, isAuthenticated: !!user };
 };

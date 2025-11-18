@@ -4,6 +4,8 @@ import logoDark from '../../assets/logo-dark.svg';
 import { navbarLinks } from '../../constants';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import { can } from '@/features/auth/rbac';
 
 export type SidebarProps = {
     collapsed?: boolean;
@@ -11,6 +13,8 @@ export type SidebarProps = {
 
 export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
     ({ collapsed = false }, ref) => {
+        const { user } = useAuth();
+
         return (
             <aside
                 ref={ref}
@@ -46,7 +50,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
 
                 {/* navbar links */}
                 <nav className="flex w-full flex-col gap-y-4 overflow-y-auto overflow-x-hidden p-3 [scrollbar-width:thin]">
-                    {navbarLinks.map((navbarLink) => (
+                    {user &&  navbarLinks.map((navbarLink) => (
                         <ul
                             key={navbarLink.title}
                             className={cn(
@@ -57,7 +61,9 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                             <li className={cn('sidebar-group-title')}>
                                 {navbarLink.title}
                             </li>
-                            {navbarLink.links.map((link) => (
+                            {navbarLink.links
+                            .filter(link => can(user.role!, link.permission))
+                            .map((link) => (
                                 <NavLink
                                     key={link.label}
                                     to={link.path}

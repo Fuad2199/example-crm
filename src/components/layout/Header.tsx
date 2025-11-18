@@ -1,8 +1,11 @@
-import { Bell, Menu, Moon, Search, Sun } from 'lucide-react';
+import { Bell, LogOut, Menu, Search, Settings } from 'lucide-react';
 import type { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
-import { useTheme } from '@/features/dashboard/hooks/use-theme';
+import { ThemeToggle } from '@/shared/components/ThemeToggle';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from '../ui/dropdown-menu';
+import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
+import { useLogout } from '@/features/auth/hooks/useLogout';
 
 interface HeaderProps {
     collapsed: boolean;
@@ -10,9 +13,9 @@ interface HeaderProps {
 }
 
 export const Header = ({ collapsed, setCollapsed }: HeaderProps) => {
-    const { theme, setTheme } = useTheme();
     const { user, isAuthenticated, loading } = useCurrentUser();
     const navigate = useNavigate();
+    const { logout } = useLogout();
 
     if (loading) return null;
 
@@ -25,10 +28,7 @@ export const Header = ({ collapsed, setCollapsed }: HeaderProps) => {
                         <Menu className="text-black cursor-pointer dark:text-white" />
                     </button>
                     <form className="input">
-                        <Search
-                            size={20}
-                            className="text-slate-300"
-                        />
+                        <Search size={20} className="text-slate-300" />
                         <input
                             type="text"
                             name="search"
@@ -44,41 +44,36 @@ export const Header = ({ collapsed, setCollapsed }: HeaderProps) => {
                     <button className="btn-ghost size-10">
                         <Bell size={20} className="cursor-pointer" />
                     </button>
-                    <button
-                        className="size-10 overflow-hidden cursor-pointer"
-                        onClick={() =>
-                            setTheme(
-                                theme === 'light' ? 'dark' : 'light',
-                            )
-                        }
-                    >
-                        <Sun
-                            size={20}
-                            className="dark:hidden cursor-pointer"
-                        />
-                        <Moon
-                            size={20}
-                            className="hidden dark:block cursor-pointer"
-                        />
-                    </button>
+                    <ThemeToggle />
 
                     {/* 🔹 Login button with navigation */}
-                            {isAuthenticated ? (
-                            <button className="size-10 overflow-hidden rounded-full cursor-pointer">
-                                <img
-                                    src={user?.avatar}
-                                    alt="User"
-                                    className="size-full object-cover"
-                                />
-                            </button>
-                        ) : (
-                            <button
-                                onClick={() => navigate('/login')}
-                                className="px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors cursor-pointer"
-                            >
-                                Login
-                            </button>
-                        )}
+                    {isAuthenticated ? (
+                        <DropdownMenu modal={false}>
+                            <DropdownMenuTrigger asChild>
+                                <button aria-label="Open menu" className="size-10 overflow-hidden rounded-full cursor-pointer">
+                                    <img src={user?.avatar} alt="User" className="size-full object-cover" />
+                                </button>
+                            </DropdownMenuTrigger>
+
+                            <DropdownMenuContent align="end" className="w-40 rounded-xl shadow-lg">
+                                <DropdownMenuItem onClick={logout} className="cursor-pointer">
+                                    <LogOut/>
+                                    LogOut
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer">
+                                    <Settings/>
+                                    Settings
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    ) : (
+                        <button
+                            onClick={() => navigate('/login')}
+                            className="px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors cursor-pointer"
+                        >
+                            Login
+                        </button>
+                    )}
                 </div>
             </nav>
         </header>

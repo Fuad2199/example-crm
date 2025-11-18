@@ -1,16 +1,17 @@
+import type { LucideIcon } from "lucide-react";
+
+export type Role = "admin" | "agent";
+
 export type LoginPayload = {
   email: string;
   password: string;
 }
 
-export type LoginResponse = {
+
+
+export interface LoginResponse {
   token: string;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    avatar?: string;
-  };
+  user: Pick<User, "id" | "name" | "role" | "email"> & { avatar?: string };
 }
 
 export interface User {
@@ -18,6 +19,22 @@ export interface User {
   name: string;
   email: string;
   avatar?: string;
-  role: string;
+  role: Role;
   isLoggedIn: boolean;
+  lastLogin: string;
 }
+
+
+export interface MenuItem {
+  id: number;
+  title: string;
+  icon: LucideIcon;
+  path: string;
+  roles: Role[];
+  children?: MenuItem[];
+}
+
+export interface ProtectedRouteProps {
+  children: React.ReactNode;
+  permission: string;
+};

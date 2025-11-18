@@ -1,0 +1,30 @@
+import { useState, useEffect } from "react";
+import type { User } from "../types";
+
+export const useAuth = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+
+    if (stored) {
+      setUser(JSON.parse(stored));
+      setLoading(false);
+      return;
+    }
+
+    // db.json-dan log edilmiş useri götür
+    fetch("http://localhost:3000/users")
+      .then(res => res.json())
+      .then((users: User[]) => {
+        const loggedIn = users.find(u => u.isLoggedIn === true) || null;
+        setUser(loggedIn);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const role = user?.role ?? null;
+
+  return { user, role, loading };
+};

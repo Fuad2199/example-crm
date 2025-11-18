@@ -1,33 +1,47 @@
-import { type LoginPayload, type LoginResponse } from "@/features/auth/types";
+import { type LoginPayload, type LoginResponse, type User } from "@/features/auth/types";
 
 export const loginUser = async (payload: LoginPayload): Promise<LoginResponse> => {
-  const res = await fetch(`http://localhost:3000/users?email=${payload.email}&password=${payload.password}`);
+  const res = await fetch(`http://localhost:3000/users`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({...payload, isLoggedIn: true }),
+  });
+  console.log("Current user", res)
   
   if (!res.ok) {
     throw new Error("Network response was not ok");
   }
   
-  const users = await res.json();
+  const users: User[] = await res.json();
+  const user = users[0];
   
-  if (!users.length) {
+  if (!user) {
     throw new Error("Invalid email or password");
   }
   
-  const user = users[0];
+  const token = "fake-jwt-token";
+  localStorage.setItem("token", token);
   
   return {
-    token: "fake-jwt-token",
+    token,
     user: {
-      id: user.id,
+      id: (user.id),
       email: user.email,
       name: user.name,
-      avatar: user.avatar,
+      avatar: user.avatar ?? "",
+      role: user.role
     },
   };
 };
 
-export const logoutUser = async () => {
-  localStorage.removeItem("token"); 
+export const logoutUser = async (userId: number) => {
+  localStorage.removeItem("token");
+
+  await fetch(`http://localhost:3000/users/${userId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ isLoggedIn: false }),
+  });
 };
 
 
