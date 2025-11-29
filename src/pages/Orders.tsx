@@ -1,23 +1,12 @@
+import { calculateOrderStats, DeleteOrderModal, EditOrderModal, NewOrderModal, OrderDetailsModal, OrdersHeader, OrdersTable, Pagination, useOrders, type Order, type StatusFilter } from '@/features/orders';
 import React, { useState, useEffect } from 'react';
-import type { Order, StatusFilter } from '@/features/orders/orders.types';
-import { calculateOrderStats } from '@/features/orders/utils/calculateOrderStats';
-import { useOrders } from '@/features/orders/hooks/useOrders';
-import { OrdersTable } from '@/features/orders/components/OrdersTable';
-import { OrdersHeader } from '@/features/orders/components/OrdersHeader';
-import { Pagination } from '@/shared/components/pagination/Pagination';
-import { OrderDetailsModal } from '@/features/orders/components/OrderDetailsModal';
-import { NewOrderModal } from '@/features/orders/components/NewOrderModal';
-import { EditOrderModal } from '@/features/orders/components/EditOrderModal';
-import { DeleteOrderModal } from '@/features/orders/components/DeleteOrderModal';
 
 const OrdersPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [currentPage, setCurrentPage] = useState<number>(1);
-
   const [orders, setOrders] = useState<Order[]>([]);
   const { data: allOrders = [] } = useOrders();
-
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isNewOrderOpen, setIsNewOrderOpen] = useState<boolean>(false);
   const [editingOrder, setEditingOrder] = useState<Order | null>(null);

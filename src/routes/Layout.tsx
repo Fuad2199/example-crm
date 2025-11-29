@@ -2,7 +2,7 @@ import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
 import { useClickOutside } from '@/features/dashboard/hooks/use-click-outside';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { useMediaQuery } from '@uidotdev/usehooks';
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -36,7 +36,7 @@ const Layout = () => {
             <div className={cn('transition-[margin] duration-300', collapsed ? "md:ml-19.5" : "md:ml-60")}>
                 <Header collapsed={collapsed}
                         setCollapsed={setCollapsed}/>
-                <div className="h-[calc(100vh - 60px)] overflow-y-auto overflow-x-hidden p-6">
+                <div className="h-[calc(100vh - 60px)] overflow-y-auto overflow-x-hidden p-6"> {/*bg:gray-50 dark:bg-gray-900*/}
                     <Outlet />
                 </div>
                 <Footer />

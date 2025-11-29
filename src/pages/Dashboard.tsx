@@ -65,10 +65,10 @@ const Dashboard = () => {
                                     </linearGradient>
                                 </defs>
                                 <Tooltip cursor={false} formatter={(value) => `$${value}`} />
-                                <XAxis dataKey="name" strokeWidth={0} stroke={theme === 'light' ? '#475569' : '#94a3b8'} tickMargin={6} />
+                                <XAxis dataKey="name" strokeWidth={1} stroke={theme === 'light' ? '#475569' : '#94a3b8'} tickMargin={6} />
                                 <YAxis
                                     dataKey="total"
-                                    strokeWidth={0}
+                                    strokeWidth={1}
                                     stroke={theme === 'light' ? '#475569' : '#94a3b8'}
                                     tickFormatter={(value) => `$${value}`}
                                     tickMargin={6}

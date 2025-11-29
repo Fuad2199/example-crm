@@ -7,8 +7,6 @@ export type LoginPayload = {
   password: string;
 }
 
-
-
 export interface LoginResponse {
   token: string;
   user: Pick<User, "id" | "name" | "role" | "email"> & { avatar?: string };
@@ -23,7 +21,6 @@ export interface User {
   isLoggedIn: boolean;
   lastLogin: string;
 }
-
 
 export interface MenuItem {
   id: number;

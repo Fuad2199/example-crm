@@ -3,9 +3,9 @@ import logoLight from '../../assets/logo-light.svg';
 import logoDark from '../../assets/logo-dark.svg';
 import { navbarLinks } from '../../constants';
 import { NavLink } from 'react-router-dom';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { useAuth } from '@/features/auth/hooks/useAuth';
-import { can } from '@/features/auth/rbac';
+import { can } from '@/utils/rbac';
 
 export type SidebarProps = {
     collapsed?: boolean;
@@ -41,7 +41,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                         />
                         {!collapsed && (
                             <p className="text-lg font-medium text-slate-900 transition-colors dark:text-slate-50">
-                                Logoipsum
+                                Example CRM
                             </p>
                         )}
                         <figcaption></figcaption>

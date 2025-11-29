@@ -51,7 +51,7 @@ export const Header = ({ collapsed, setCollapsed }: HeaderProps) => {
                         <DropdownMenu modal={false}>
                             <DropdownMenuTrigger asChild>
                                 <button aria-label="Open menu" className="size-10 overflow-hidden rounded-full cursor-pointer">
-                                    <img src={user?.avatar} alt="User" className="size-full object-cover" />
+                                    <img title={user?.name} src={user?.avatar} alt={user?.name} className="size-full object-cover" />
                                 </button>
                             </DropdownMenuTrigger>
 

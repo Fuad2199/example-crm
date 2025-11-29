@@ -1,9 +1,9 @@
-import type { Role } from "../types";
+import type { Role } from "@/features/auth/types";
 import type { LucideIcon } from "lucide-react";
 
 const rolePermissions: Record<Role, string[]> = {
-  admin: ["dashboard:read", "customers:read", "sales:read", "products:read", "orders:read", "analytics:read", "profile:read"],
-  agent: ["dashboard:read", "customers:read", "sales:read", "orders:read", "profile:read"],
+  admin: ["dashboard:read", "contacts:read", "customers:read", "deals:read", "leads:read", "users:read", "orders:read", "activity:read", "profile:read"],
+  agent: ["dashboard:read", "contacts:read", "customers:read", "deals:read", "leads:read", "users:read", "orders:read"],
 };
 
 // İcazə yoxlama

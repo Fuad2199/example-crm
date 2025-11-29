@@ -4,11 +4,13 @@ import Layout from "./Layout";
 import Dashboard from "@/pages/Dashboard";
 import { ProtectedRoute } from "@/features/auth/components/ProtectedRoute";
 import Customers from "@/pages/Customers";
-import { Sales } from "@/pages/Sales";
-import { Products } from "@/pages/Products";
 import OrdersPage from "@/pages/Orders";
-import { Analytics } from "@/pages/Analytics";
 import ProfilePage from "@/pages/Profile";
+import Deals from "@/pages/Deals";
+import { Users } from "@/pages/Users";
+import { ActivityLogs } from "@/pages/ActivityLogs";
+import { Contacts } from "@/pages/Contacts";
+import { LeadsPage } from "@/pages/Leads";
 
 export const router = createBrowserRouter([
   {
@@ -36,18 +38,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "sales",
+        path: "deals",
         element: (
-          <ProtectedRoute permission="sales:read">
-            <Sales />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "products",
-        element: (
-          <ProtectedRoute permission="products:read">
-            <Products />
+          <ProtectedRoute permission="deals:read">
+            <Deals />
           </ProtectedRoute>
         ),
       },
@@ -60,10 +54,34 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "analytics",
+        path: "users",
         element: (
-          <ProtectedRoute permission="analytics:read">
-            <Analytics />
+          <ProtectedRoute permission="users:read">
+            <Users />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "contacts",
+        element: (
+          <ProtectedRoute permission="contacts:read">
+            <Contacts />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "activity",
+        element: (
+          <ProtectedRoute permission="activity:read">
+            <ActivityLogs />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "leads",
+        element: (
+          <ProtectedRoute permission="leads:read">
+            <LeadsPage />
           </ProtectedRoute>
         ),
       },

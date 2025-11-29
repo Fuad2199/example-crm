@@ -29,5 +29,5 @@ export const useCurrentUser = () => {
     fetchLoggedInUser();
   }, []);
 
-  return { user, setUser, loading, isAuthenticated: !!user };
+  return { user, setUser, loading, isAuthenticated: user };
 };

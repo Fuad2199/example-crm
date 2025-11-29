@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "@/services/auth.service";
 import type { LoginPayload } from "../types";
+import { authService } from "../services/auth.service";
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);

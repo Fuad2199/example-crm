@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
-import { can } from "../rbac";
 import type { ProtectedRouteProps } from "../types";
 import { useAuth } from "../hooks/useAuth";
+import { can } from "@/utils/rbac";
 
 
 
