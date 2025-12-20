@@ -1,6 +1,6 @@
 // src/features/orders/services/OrderService.ts
 import axios from 'axios';
-import type { Order } from '../orders.types';
+import type { Order } from '../types/orders.types';
 import { generateOrderId } from '../hooks/generatedOrderId';
 
 /**

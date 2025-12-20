@@ -1,5 +1,7 @@
 import type { Role } from '@/features/auth/types';
+import type { Deal } from '@/features/deals/types/deals.types';
 import type { Lead } from '@/features/leads/types';
+import { Permission } from '@/utils/rbac/Permission';
 import { Contact, Handshake, History, Home, Receipt, Settings, UserPlus, Users, Users2Icon, type LucideIcon } from 'lucide-react';
 
 export interface SidebarLink {
@@ -7,7 +9,7 @@ export interface SidebarLink {
     path: string;
     icon: LucideIcon; // lucide icon component
     roles?: Role[];
-    permission: string[];
+    permission: Permission;
 }
 
 export interface SidebarGroup {
@@ -19,20 +21,20 @@ export const navbarLinks: SidebarGroup[] = [
     {
         title: 'Main',
         links: [
-            { label: 'Dashboard', path: '/dashboard', icon: Home, permission: ['admin', 'agent'] },
-            { label: 'Contacts', path: '/contacts', icon: Contact, permission: ['admin', 'agent'] }
+            { label: 'Dashboard', path: '/dashboard', icon: Home, permission: Permission.DASHBOARD_READ },
+            { label: 'Contacts', path: '/contacts', icon: Contact, permission: Permission.CONTACTS_READ }
     ],
     },
     {
         title: 'Management',
         links: [
-            { label: 'Leads', path: '/leads', icon: UserPlus, permission: ['admin', 'agent'] },
-            { label: 'Deals', path: '/deals', icon: Handshake, permission: ['admin', 'agent'] },
-            { label: 'Orders', path: '/orders', icon: Receipt, permission: ['admin', 'agent'] },
-            { label: 'Customers', path: '/customers', icon: Users, permission: ['admin', 'agent'] },
-            { label: 'Users', path: '/users', icon: Users2Icon, permission: ['admin', 'agent'] },
-            { label: 'Activity Logs', path: '/activity', icon: History, permission: ['admin'] },
-            { label: 'Settings', path: '/settings', icon: Settings, permission: ['admin'] },
+            { label: 'Leads', path: '/leads', icon: UserPlus, permission: Permission.LEADS_READ },
+            { label: 'Deals', path: '/deals', icon: Handshake, permission: Permission.DEALS_READ },
+            { label: 'Orders', path: '/orders', icon: Receipt, permission: Permission.ORDERS_READ },
+            { label: 'Customers', path: '/customers', icon: Users, permission: Permission.CUSTOMERS_READ },
+            { label: 'Users', path: '/users', icon: Users2Icon, permission: Permission.USERS_READ },
+            { label: 'Activity Logs', path: '/activity', icon: History, permission: Permission.ACTIVITY_READ },
+            { label: 'Settings', path: '/settings', icon: Settings, permission: Permission.PROFILE_READ },
         ],
     },
 ];
@@ -512,4 +514,12 @@ export const mockLeads: Lead[] = [
     createdAt: '2025-11-19',
     lastContact: '2025-11-28'
   }
+];
+
+export const mockDeals: Deal[] = [
+  { id: "1", name: "Enterprise SaaS License", customer: "Acme Corp", amount: 125000, status: "Negotiation", expectedClose: "2024-12-15" },
+  { id: "2", name: "Cloud Infrastructure", customer: "TechStart Inc", amount: 85000, status: "New", expectedClose: "2024-12-20" },
+  { id: "3", name: "Annual Support Contract", customer: "Global Solutions", amount: 45000, status: "Won", expectedClose: "2024-11-30" },
+  { id: "4", name: "Platform Migration", customer: "DataFlow Systems", amount: 200000, status: "Negotiation", expectedClose: "2025-01-10" },
+  { id: "5", name: "Consulting Services", customer: "Innovation Labs", amount: 30000, status: "Lost", expectedClose: "2024-11-15" },
 ];

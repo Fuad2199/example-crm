@@ -1,6 +1,6 @@
 // src/features/orders/utils/calculateOrderStats.ts
 
-import type { Order } from "../orders.types";
+import type { Order } from "../types/orders.types";
 
 export const calculateOrderStats = (orders: Order[]) => ({
   total: orders.length,

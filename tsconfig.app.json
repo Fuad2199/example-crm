@@ -42,8 +42,9 @@
       "@lib/*": ["src/lib/*"],
       "@hooks/*": ["src/hooks/*"],
       "@pages/*": ["src/pages/*"],
-      "@services/*": ["src/services/*"]
+      "@services/*": ["src/services/*"],
+      "@features/auth/store": ["src/features/auth/store"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "@/components/ui/input.tsx", "@/components/ui/label.tsx"]
 }

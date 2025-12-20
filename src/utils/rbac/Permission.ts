@@ -2,9 +2,11 @@ export const Permission = {
   DASHBOARD_READ: "dashboard:read",
   CUSTOMERS_READ: "customers:read",
   DEALS_READ: "deals:read",
-  PRODUCTS_READ: "products:read",
   ORDERS_READ: "orders:read",
-  ANALYTICS_READ: "analytics:read",
+  USERS_READ: "users:read",
+  CONTACTS_READ: "contacts:read",
+  ACTIVITY_READ: "activity:read",
+  LEADS_READ: "leads:read",
   PROFILE_READ: "profile:read",
 } as const;
 

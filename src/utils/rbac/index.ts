@@ -1,13 +1,14 @@
 import type { Role } from "@/features/auth/types";
 import type { LucideIcon } from "lucide-react";
+import type { Permission } from "./Permission";
 
-const rolePermissions: Record<Role, string[]> = {
+const rolePermissions: Record<Role, Permission[]> = {
   admin: ["dashboard:read", "contacts:read", "customers:read", "deals:read", "leads:read", "users:read", "orders:read", "activity:read", "profile:read"],
   agent: ["dashboard:read", "contacts:read", "customers:read", "deals:read", "leads:read", "users:read", "orders:read"],
 };
 
 // İcazə yoxlama
-export const can = (role: Role, permissions: string[] | string): boolean => {
+export const can = (role: Role, permissions: Permission): boolean => {
   if (!permissions) return false;
 
   if (Array.isArray(permissions)) {

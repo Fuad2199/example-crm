@@ -1,5 +1,5 @@
 export { useState, useEffect } from 'react';
-export type { Order, StatusFilter } from '@/features/orders/orders.types';
+export type { Order, StatusFilter } from '@/features/orders/types/orders.types';
 export { calculateOrderStats } from '@/features/orders/utils/calculateOrderStats';
 export { useOrders } from '@/features/orders/hooks/useOrders';
 export { OrdersTable } from '@/features/orders/components/OrdersTable';

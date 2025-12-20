@@ -1,12 +1,16 @@
 import { type LoginPayload, type LoginResponse, type User } from "@/features/auth/types";
 
-export const loginUser = async (payload: LoginPayload): Promise<LoginResponse> => {
+const BASE_URL = "http://localhost:3000";
+
+export const loginUser = async (
+  payload: LoginPayload
+): Promise<User> => {
   const res = await fetch(
-    `http://localhost:3000/users?email=${payload.email}&password=${payload.password}`
+    `${BASE_URL}/users?email=${payload.email}&password=${payload.password}`
   );
 
   if (!res.ok) {
-    throw new Error("Network error");
+    throw new Error(`Network error: ${res.status} ${res.statusText}`);
   }
 
   const users: User[] = await res.json();
@@ -17,31 +21,32 @@ export const loginUser = async (payload: LoginPayload): Promise<LoginResponse> =
   }
 
   // Update login state
-  await fetch(`http://localhost:3000/users/${user.id}`, {
+  await fetch(`${BASE_URL}/users/${user.id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ isLoggedIn: true }),
   });
 
-  const token = "fake-jwt-token";
-  localStorage.setItem("token", token);
-
-  return {
-    token,
-    user,
-  };
+  return user;
 };
 
-
-export const logoutUser = async (userId: number) => {
-  localStorage.removeItem("token");
-
-  await fetch(`http://localhost:3000/users/${userId}`, {
-    method: "PATCH",
+export const logoutUser = async (user: User): Promise<User> => {
+  // Önce mevcut kullanıcıyı al
+  const getUserRes = await fetch(`${BASE_URL}/users/${user.id}`);
+  const currentUser = await getUserRes.json();
+  console.log("Current user before logout:", currentUser);
+  
+  // PATCH isteği gönder
+  const res = await fetch(`${BASE_URL}/users/${user.id}`, {
+    method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ isLoggedIn: false }),
+    body: JSON.stringify({
+      ...currentUser,
+      isLoggedIn: false
+    }),
   });
+  
+  return await res.json();
 };
-
 
 export type { LoginPayload, LoginResponse };

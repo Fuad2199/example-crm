@@ -1,7 +1,7 @@
 // src/features/orders/components/DeleteOrderModal.tsx
 import React from 'react';
 import { X } from 'lucide-react';
-import type { Order } from '@/features/orders/orders.types';
+import type { Order } from '@/features/orders/types/orders.types';
 
 interface DeleteOrderModalProps {
   order: Order;

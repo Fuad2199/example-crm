@@ -1,0 +1,27 @@
+// store/index.ts
+import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // localStorage
+import authReducer from "../features/auth/store/authSlice";
+
+const persistConfig = {
+  key: "auth",
+  storage,
+  blacklist: ["accessToken", "refreshToken", "password"], // sensitive məlumatları saxlamırıq
+};
+
+const persistedReducer = persistReducer(persistConfig, authReducer);
+
+export const store = configureStore({
+  reducer: { auth: persistedReducer },
+  middleware: (getDefaultMiddleware) =>
+     getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE', 'persist/REGISTER'],
+    },
+  }),
+});
+
+export const persistor = persistStore(store);
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

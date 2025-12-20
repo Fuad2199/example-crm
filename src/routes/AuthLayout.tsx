@@ -10,7 +10,7 @@ export const AuthLayout = ({ children }: AuthLayoutProps) => {
     return (
         <div className="min-h-screen flex flex-col bg-linear-to-br from-purple-50 to-purple-100">
             {/* Header */}
-            <header className="w-full py-4 px-6 flex justify-between items-center bg-white/70 backdrop-blur shadow-sm">
+            <header className="w-full py-4 px-6 flex justify-between items-center bg-white/70 backdrop-blur shadow-sm min-h-16">
                 <h1 className="text-xl font-semibold text-purple-700">Sales CRM</h1>
 
                 <nav>
@@ -22,7 +22,7 @@ export const AuthLayout = ({ children }: AuthLayoutProps) => {
             <main className="flex-1 flex items-center justify-center p-6">{children}</main>
 
             {/* Modern Footer */}
-            <footer className="bg-white/70 backdrop-blur py-8 px-6 border-t border-purple-200/40">
+            <footer className="bg-white/70 backdrop-blur py-8 px-6 border-t border-purple-200/40 min-h-45">
                 <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
                     {/* Brand Section */}
                     <div>

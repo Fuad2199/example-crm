@@ -1,23 +1,7 @@
 import React, { useState } from "react";
 import { Search, Filter, TrendingUp, DollarSign, Calendar, ChevronDown, MoreVertical } from "lucide-react";
-
-interface Deal {
-  id: string;
-  name: string;
-  customer: string;
-  amount: number;
-  status: "New" | "Negotiation" | "Won" | "Lost";
-  expectedClose: string;
-}
-
-// Mock data
-const mockDeals: Deal[] = [
-  { id: "1", name: "Enterprise SaaS License", customer: "Acme Corp", amount: 125000, status: "Negotiation", expectedClose: "2024-12-15" },
-  { id: "2", name: "Cloud Infrastructure", customer: "TechStart Inc", amount: 85000, status: "New", expectedClose: "2024-12-20" },
-  { id: "3", name: "Annual Support Contract", customer: "Global Solutions", amount: 45000, status: "Won", expectedClose: "2024-11-30" },
-  { id: "4", name: "Platform Migration", customer: "DataFlow Systems", amount: 200000, status: "Negotiation", expectedClose: "2025-01-10" },
-  { id: "5", name: "Consulting Services", customer: "Innovation Labs", amount: 30000, status: "Lost", expectedClose: "2024-11-15" },
-];
+import { mockDeals } from "@/constants";
+import type { Deal } from "@/features/deals/types/deals.types";
 
 const Deals: React.FC = () => {
   const [deals] = useState<Deal[]>(mockDeals);

@@ -1,38 +1,70 @@
-// src/services/auth-service.ts
+import { loginUser, logoutUser } from "../api/auth.api";
+import type { LoginPayload, LoginResponse, User } from "../types";
 
-import { loginUser, type LoginPayload, type LoginResponse } from "@/features/auth/api/auth.api";
-
-const TOKEN_KEY = "token";
+const ACCESS_TOKEN_KEY = "accessToken";
+const REFRESH_TOKEN_KEY = "refreshToken";
 const USER_KEY = "user";
 
 export const authService = {
-  // 1️⃣ Login funksiyası
-  async login(payload: LoginPayload): Promise<LoginResponse> {
-    const data = await loginUser(payload);
-    localStorage.setItem(TOKEN_KEY, data.token);
-    localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-    return data;
+  login: async (payload: LoginPayload): Promise<LoginResponse> => {
+    // JSON Server-dən user-i çəkirik və isLoggedIn true olur
+    const user: User = await loginUser(payload);
+
+    if (!user) {
+      throw new Error("Email və ya şifrə yanlışdır");
+    }
+    
+    const accessToken = "fakeAccessToken-" + user.id;
+    const refreshToken = "fakeRefreshToken-" + user.id;
+
+    // localStorage-a yaz
+    localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+    localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+
+    return {
+      user,
+      accessToken,
+      refreshToken
+    };
   },
 
-  // 2️⃣ Logout funksiyası
-  logout() {
-    localStorage.removeItem(TOKEN_KEY);
+  logout: async () => {
+    const userStr = localStorage.getItem(USER_KEY);
+    if (userStr) {
+      const user: User = JSON.parse(userStr);
+      
+      try {
+        await logoutUser(user);
+        console.log("✅ User logged out from JSON Server");
+      } catch (error) {
+        console.error("❌ Error updating JSON Server:", error);
+      }
+    }
+
+    // localStorage-u təmizlə
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
   },
 
-  // 3️⃣ Hazır user-i gətirir (localStorage-dan)
-  getCurrentUser() {
-    const userJson = localStorage.getItem(USER_KEY);
-    return userJson ? JSON.parse(userJson) : null;
+  getCurrentUser: (): User | null => {
+    const userStr = localStorage.getItem(USER_KEY);
+    return userStr ? JSON.parse(userStr) : null;
   },
 
-  // 4️⃣ Token-i oxuyur
-  getToken() {
-    return localStorage.getItem(TOKEN_KEY);
+  getAccessToken: (): string | null => localStorage.getItem(ACCESS_TOKEN_KEY),
+
+  isLoggedIn: (): boolean => {
+    const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+    const user = localStorage.getItem(USER_KEY);
+    return !!accessToken && !!user;
   },
 
-  // 5️⃣ Login olub-olmadığını yoxlayır
-  isAuthenticated() {
-    return Boolean(localStorage.getItem(TOKEN_KEY));
-  },
+  refreshToken: async (): Promise<string> => {
+    // burda da fake refresh
+    const newAccessToken = "fakeRefreshedToken-" + Date.now();
+    localStorage.setItem(ACCESS_TOKEN_KEY, newAccessToken);
+    return newAccessToken;
+  }
 };

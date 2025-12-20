@@ -1,13 +1,6 @@
 import React from 'react';
-import type { Order } from '@/features/orders/orders.types';
 import { OrdersTableRowActions } from './OrdersTableRowActions';
-
-interface OrdersTableProps {
-  orders: Order[];
-  onViewOrder: (order: Order) => void;
-  onEditOrder: (order: Order) => void;
-  onDeleteOrder: (order: Order) => void;
-}
+import type { OrdersTableProps } from '../types/orders.types';
 
 export const OrdersTable: React.FC<OrdersTableProps> = ({
   orders,
@@ -18,6 +11,8 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
+
+        {/* orders table header */}
         <thead className="bg-gray-50">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:bg-slate-900 dark:text-slate-50 uppercase tracking-wider">
@@ -41,6 +36,7 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
           </tr>
         </thead>
 
+        {/* orders table content */}
         <tbody className="bg-white divide-y divide-gray-200">
           {orders.map(order => (
             <tr key={order.id}>

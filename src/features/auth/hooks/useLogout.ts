@@ -1,34 +1,34 @@
+// src/hooks/useLogout.ts
 import { useState } from "react";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useNavigate } from "react-router-dom";
-import { logoutUser } from "../api/auth.api";
+import { authService } from "../services/auth.service";
+
+type LogoutResult = {
+  success: boolean;
+  error?: Error | string;
+};
 
 export const useLogout = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { setUser, user } = useCurrentUser();
   const navigate = useNavigate();
 
-  const logout = async () => {
-  if (!user) {
-    setError("No user logged in");
-    return;
-  }
+  const logout = async (): Promise<LogoutResult> => {
+    setLoading(true);
+    setError(null);
 
-  setLoading(true);
-  setError(null);
-
-  try {
-    await logoutUser(user.id);
-    setUser(null);
-    navigate("/login");
-  } catch (err: unknown) {
-    console.error(err);
-    setError(err instanceof Error ? err.message : "Unknown error");
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      authService.logout();
+      navigate("/login");
+      return { success: true };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      setError(message);
+      return { success: false, error: message };
+    } finally {
+      setLoading(false); // yalnız side-effect, return yox
+    }
+  };
 
   return { logout, loading, error };
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 import { createOrder } from '../services/OrderService';
-import type { Order } from '../orders.types';
+import type { Order } from '../types/orders.types';
 
 interface NewOrderModalProps {
   onClose: () => void;

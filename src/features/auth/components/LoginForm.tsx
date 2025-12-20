@@ -1,27 +1,66 @@
-
-import Button from "@/components/ui/Button/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Mail } from "lucide-react";
-import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useState, type FormEvent, type JSX } from "react";
 import { FaGithub } from "react-icons/fa6";
-import { useLogin } from "../hooks/useLogin";
+import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
+import { Button, Checkbox, Input, Label } from "@/components/ui";
+import type { LoginPayload } from "@/features/auth/types";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { loginThunk } from "../store/loginThunk";
 
-const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const { login } = useLogin();
+const LoginForm = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // 🔒 Redux state tam type-safe
+  const { loading, error } = useAppSelector((state) => state.auth);
+
+  // 🔒 Local state-lər explicit typed
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    await login({ email, password })
-  }
+
+    if (!email || !password) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    const payload: LoginPayload = { email, password };
+
+    try {
+      // unwrap → ya LoginResponse qaytarır, ya da error atır
+      const result = await dispatch(loginThunk(payload)).unwrap();
+
+      // 🔒 role artıq union type-dir: "admin" | "agent"
+      switch (result.user.role) {
+        case "admin":
+          navigate("/dashboard");
+          break;
+        case "agent":
+          navigate("/orders");
+          break;
+        default:
+          navigate("/");
+      }
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Login failed";
+      alert(message);
+    }
+  };
+
+  const fillDemoCredentials = (): void => {
+    setEmail("test@example.com");
+    setPassword("password123");
+  };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-purple-50 to-purple-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-purple-50 to-blue-50 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -30,77 +69,86 @@ const LoginForm = () => {
       >
         <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
           <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold tracking-tighter">
+            <h1 className="text-3xl font-bold text-gray-900">
               Welcome back
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Enter your credentials to access your account
             </p>
           </div>
-          <form className="space-y-4">
-            <div className="space-y-2">
+
+          <button
+            type="button"
+            onClick={fillDemoCredentials}
+            className="w-full py-2 text-sm bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100"
+          >
+            Fill Demo Credentials
+          </button>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="test@yourwebsite.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e): void => setEmail(e.target.value)}
                 required
-              ></Input>
+              />
             </div>
-            <div className="space-y-2">
+
+            <div>
               <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <Input
                   id="password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  type={showPassword ? "text" : "password"}
                   value={password}
+                  onChange={(e): void => setPassword(e.target.value)}
                   required
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-0 transform translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer"
+                  onClick={(): void => setShowPassword((p) => !p)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2"
                 >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showPassword ? <EyeOff /> : <Eye />}
                 </button>
               </div>
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="remember" className="cursor-pointer" />
-                <Label htmlFor="remember">Remember me</Label>
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  checked={rememberMe}
+                  onCheckedChange={(checked): void =>
+                    setRememberMe(Boolean(checked))
+                  }
+                />
+                <Label>Remember me</Label>
               </div>
-              <a href="#" className="text-sm">
-                Forgot Password?
-              </a>
             </div>
-            <Button type="submit" onClick={handleSubmit} className="w-full cursor-pointer">
-                Sign in
+
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full"
+            >
+              {loading ? "Signing in..." : "Sign in"}
             </Button>
+
+            {error && (
+              <p className="text-sm text-red-600">{error}</p>
+            )}
           </form>
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t"/>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-muted-foreground">Or continue with</span>
-            </div>
-          </div>
+
           <div className="grid grid-cols-2 gap-4">
-            <Button variant={"outline"} className="w-full cursor-pointer">
-                <FaGithub className="mr-2 h-4 w-4"/>
-                Github
+            <Button variant="outline">
+              <FaGithub className="mr-2" /> GitHub
             </Button>
-            <Button variant={"outline"} className="w-full cursor-pointer">
-                <Mail className="mr-2 h-4 w-4"/>
-                Google
+            <Button variant="outline">
+              <FcGoogle className="mr-2" /> Google
             </Button>
-          </div>
-          <div className="text-center text-sm">
-            Don't have an account? <a href="#" className="text-primary font-medium">Sign up</a>
           </div>
         </div>
       </motion.div>

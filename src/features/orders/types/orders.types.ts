@@ -1,3 +1,10 @@
+export interface OrdersTableProps {
+  orders: Order[];
+  onViewOrder: (order: Order) => void;
+  onEditOrder: (order: Order) => void;
+  onDeleteOrder: (order: Order) => void;
+}
+
 export interface Order {
   id: string;
   customer: string;

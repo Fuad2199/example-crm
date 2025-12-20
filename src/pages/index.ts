@@ -1,0 +1,10 @@
+export {default as Login } from "@/pages/Login";
+export { default as Dashboard } from "@/pages/Dashboard";
+export { default as Customers } from "@/pages/Customers";
+export { default as OrdersPage } from "@/pages/Orders";
+export { default as ProfilePage } from "@/pages/Profile";
+export { default as Deals } from "@/pages/Deals";
+export { Users } from "@/pages/Users";
+export { ActivityLogs } from "@/pages/ActivityLogs";
+export { Contacts } from "@/pages/Contacts";
+export { LeadsPage } from "@/pages/Leads";

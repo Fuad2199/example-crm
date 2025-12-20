@@ -1,6 +1,6 @@
 import React from 'react';
 import { OrdersStatsCards, type OrdersStats } from '@/features/orders/components/OrderStatsCards';
-import type { StatusFilter } from '@/features/orders/orders.types';
+import type { StatusFilter } from '@/features/orders/types/orders.types';
 import { SearchFilter } from '@/shared/components/search-filter';
 import { OrdersActions } from './OrdersActions';
 

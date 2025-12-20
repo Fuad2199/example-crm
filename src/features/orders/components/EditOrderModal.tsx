@@ -1,7 +1,7 @@
 // src/features/orders/components/EditOrderModal.tsx
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-import type { Order } from '@/features/orders/orders.types';
+import type { Order } from '@/features/orders/types/orders.types';
 import { updateOrder } from '../services/OrderService';
 
 interface EditOrderModalProps {

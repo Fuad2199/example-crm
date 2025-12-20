@@ -1,6 +1,6 @@
 import React from 'react';
 import { Edit, X, Eye } from 'lucide-react';
-import type { Order } from '@/features/orders/orders.types';
+import type { Order } from '@/features/orders/types/orders.types';
 
 interface OrdersTableRowActionsProps {
   order: Order;
