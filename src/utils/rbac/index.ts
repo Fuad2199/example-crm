@@ -1,4 +1,4 @@
-import type { Role } from "@/features/auth/types";
+import type { Role } from "@/features/auth/types/types";
 import type { LucideIcon } from "lucide-react";
 import type { Permission } from "./Permission";
 

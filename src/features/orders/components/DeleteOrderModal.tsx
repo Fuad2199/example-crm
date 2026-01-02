@@ -2,6 +2,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 import type { Order } from '@/features/orders/types/orders.types';
+import { useDeleteOrderMutation } from '../api/orders.api';
 
 interface DeleteOrderModalProps {
   order: Order;
@@ -14,11 +15,15 @@ export const DeleteOrderModal: React.FC<DeleteOrderModalProps> = ({
   onClose,
   onDeleted,
 }) => {
-  const handleDelete = () => {
-    // Burada backend API çağırışı edə bilərsən, məsələn:
-    // await deleteOrder(order.id);
-    console.log('Deleted order', order.id);
-    onDeleted();
+  const [deleteOrder] = useDeleteOrderMutation();
+  const handleDelete = async () => {
+    try {
+      await deleteOrder(order.id);
+      console.log('Deleted order', order.id);
+      onDeleted();
+    } catch (error) {
+      console.error('Error deleting order:', error);
+    }
   };
 
   return (

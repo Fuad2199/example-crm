@@ -92,3 +92,5 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
     </div>
   );
 };
+
+export default React.memo(OrdersTable);

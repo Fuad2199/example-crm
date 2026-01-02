@@ -1,4 +1,4 @@
-import type { Role } from '@/features/auth/types';
+import type { Role } from '@/features/auth/types/types';
 import type { Deal } from '@/features/deals/types/deals.types';
 import type { Lead } from '@/features/leads/types';
 import { Permission } from '@/utils/rbac/Permission';

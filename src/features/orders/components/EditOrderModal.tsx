@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import type { Order } from '@/features/orders/types/orders.types';
-import { updateOrder } from '../services/OrderService';
+import { useUpdateOrderMutation } from '../api/orders.api';
 
 interface EditOrderModalProps {
   order: Order;
@@ -11,6 +11,7 @@ interface EditOrderModalProps {
 }
 
 export const EditOrderModal: React.FC<EditOrderModalProps> = ({ order, onClose, onUpdated }) => {
+  const [updateOrder, {isLoading}] = useUpdateOrderMutation();
   const [customer, setCustomer] = useState(order.customer);
   const [products, setProducts] = useState(order.products);
   const [status, setStatus] = useState<Order['status']>(order.status);
@@ -18,7 +19,11 @@ export const EditOrderModal: React.FC<EditOrderModalProps> = ({ order, onClose, 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const updated = await updateOrder(order.id, { customer, products, status });
+      const updated = await updateOrder({ id: order.id, data: {customer, products, status }}).unwrap();
+      if (!updated) {
+        alert("update is not available");
+        return;
+      }
       onUpdated(updated);
       onClose();
     } catch (error) {
@@ -64,6 +69,7 @@ export const EditOrderModal: React.FC<EditOrderModalProps> = ({ order, onClose, 
           </select>
           <button
             type="submit"
+            disabled={isLoading}
             className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors cursor-pointer"
           >
             Save Changes

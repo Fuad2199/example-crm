@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Customer } from "./types";
+import type { Customer } from "../types/customer.types";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 

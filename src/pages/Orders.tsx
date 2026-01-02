@@ -1,109 +1,141 @@
-import { calculateOrderStats, DeleteOrderModal, EditOrderModal, NewOrderModal, OrderDetailsModal, OrdersHeader, OrdersTable, Pagination, useOrders, type Order, type StatusFilter } from '@/features/orders';
-import React, { useState, useEffect } from 'react';
+import React, { startTransition, Suspense, useState, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { type AppDispatch, type RootState } from '@/store';
+import {
+  setSearchTerm,
+  setStatusFilter,
+  setCurrentPage,
+  setSelectedOrder,
+  setEditingOrder,
+  setDeletingOrder,
+} from '@/features/orders/store/order.slices';
+import {
+  calculateOrderStats,
+  OrdersHeader,
+  OrdersTable,
+  Pagination,
+  OrderDetailsModal,
+  NewOrderModal,
+  EditOrderModal,
+  DeleteOrderModal,
+  type Order,
+  type StatusFilter,
+} from '@/features/orders';
+import {
+  useGetOrdersQuery,
+  useCreateOrderMutation,
+  useUpdateOrderMutation,
+  useDeleteOrderMutation,
+} from '@/features/orders/api/orders.api';
+import OrdersSkeleton from '@/features/orders/components/OrderSkeleton';
 
 const OrdersPage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [orders, setOrders] = useState<Order[]>([]);
-  const { data: allOrders = [] } = useOrders();
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [isNewOrderOpen, setIsNewOrderOpen] = useState<boolean>(false);
-  const [editingOrder, setEditingOrder] = useState<Order | null>(null);
-  const [deletingOrder, setDeletingOrder] = useState<Order | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const { searchTerm, statusFilter, currentPage, selectedOrder, editingOrder, deletingOrder } =
+    useSelector((state: RootState) => state.orderUI);
 
+  const [isNewOrderOpen, setIsNewOrderOpen] = useState(false);
   const itemsPerPage = 10;
 
-  // Sync hook data to local state
-  useEffect(() => {
-    setOrders(allOrders);
-  }, [allOrders]);
+  // RTK Query: server-side pagination
+  const { data: orders = [], isLoading } = useGetOrdersQuery({ page: currentPage, limit: itemsPerPage });
 
-  const stats = calculateOrderStats(orders);
+  const [createOrder] = useCreateOrderMutation();
+  const [updateOrder] = useUpdateOrderMutation();
+  const [deleteOrder] = useDeleteOrderMutation();
 
-  // Filter logic
-  const filteredOrders: Order[] = orders.filter((order) => {
-    const matchesSearch =
-      searchTerm === '' ||
-      order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.products.toLowerCase().includes(searchTerm.toLowerCase());
+  // Filter & memoization
+  const filteredOrders = useMemo(() => {
+    return orders.filter((order) => {
+      const matchesSearch = searchTerm === '' || order.customer?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+      return matchesSearch && matchesStatus;
+    });
+  }, [orders, searchTerm, statusFilter]);
 
-    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+  const totalPages = useMemo(() => Math.ceil(filteredOrders.length / itemsPerPage), [filteredOrders.length]);
 
-    return matchesSearch && matchesStatus;
-  });
-
-  // Pagination
-  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedOrders = filteredOrders.slice(startIndex, startIndex + itemsPerPage);
+  const stats = useMemo(() => calculateOrderStats(orders), [orders]);
 
   // Handlers
-  const handleViewOrder = (order: Order) => setSelectedOrder(order);
-  const handleCloseView = () => setSelectedOrder(null);
+  const handleSearchChange = (value: string) =>
+    startTransition(() => {
+      dispatch(setSearchTerm(value));
+    });
+  const handleFilterChange = (value: StatusFilter) => dispatch(setStatusFilter(value));
+  const handlePageChange = (page: number) => dispatch(setCurrentPage(page));
+
+  const handleViewOrder = (order: Order) => dispatch(setSelectedOrder(order));
+  const handleCloseView = () => dispatch(setSelectedOrder(null));
 
   const handleOpenNewOrder = () => setIsNewOrderOpen(true);
   const handleCloseNewOrder = () => setIsNewOrderOpen(false);
 
-  const handleEditOrder = (order: Order) => setEditingOrder(order);
-  const handleCloseEditOrder = () => setEditingOrder(null);
+  const handleEditOrder = (order: Order) => dispatch(setEditingOrder(order));
+  const handleCloseEditOrder = () => dispatch(setEditingOrder(null));
 
-  const handleDeleteOrder = (order: Order) => setDeletingOrder(order);
-  const handleCloseDeleteOrder = () => setDeletingOrder(null);
+  const handleDeleteOrder = (order: Order) => dispatch(setDeletingOrder(order));
+  const handleCloseDeleteOrder = () => dispatch(setDeletingOrder(null));
 
-  // Callbacks from modals
-  const handleOrderCreated = (newOrder: Order) => {
-    setOrders((prev) => [newOrder, ...prev]);
+  const handleOrderCreated = async (newOrder: Omit<Order, 'id'>) => {
+    await createOrder(newOrder);
     setIsNewOrderOpen(false);
   };
 
-  const handleOrderUpdated = (updated: Order) => {
-    setOrders((prev) => prev.map((o) => (o.id === updated.id ? updated : o)));
-    setEditingOrder(null);
+  const handleOrderUpdated = async (updated: Order) => {
+    await updateOrder({ id: updated.id, data: updated });
+    dispatch(setEditingOrder(null));
   };
 
-  const handleOrderDeleted = (deletedId: string) => {
-    setOrders((prev) => prev.filter((o) => o.id !== deletedId));
-    setDeletingOrder(null);
+  const handleOrderDeleted = async (deletedId: string) => {
+    await deleteOrder(deletedId);
+    dispatch(setDeletingOrder(null));
   };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
-      {/* Header */}
       <OrdersHeader
         stats={stats}
         searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
+        onSearchChange={handleSearchChange}
         statusFilter={statusFilter}
-        onFilterChange={setStatusFilter}
+        onFilterChange={handleFilterChange}
         onNewOrder={handleOpenNewOrder}
       />
 
-      {/* Orders Table */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 dark:bg-slate-900 dark:text-slate-50">
-        <OrdersTable
-          orders={paginatedOrders}
-          onViewOrder={handleViewOrder}
-          onEditOrder={handleEditOrder}
-          onDeleteOrder={handleDeleteOrder}
-        />
+        <div className="min-h-[420px]">
+          {isLoading ? (
+            <OrdersSkeleton />
+          ) : (
+            <OrdersTable
+              orders={filteredOrders}
+              onViewOrder={handleViewOrder}
+              onEditOrder={handleEditOrder}
+              onDeleteOrder={handleDeleteOrder}
+            />
+          )}
+        </div>
 
-        {/* Pagination */}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          onPageChange={handlePageChange}
           totalItems={filteredOrders.length}
           itemsPerPage={itemsPerPage}
         />
       </div>
 
-      {/* Modals */}
       {selectedOrder && <OrderDetailsModal order={selectedOrder} onClose={handleCloseView} />}
       {isNewOrderOpen && <NewOrderModal onClose={handleCloseNewOrder} onCreated={handleOrderCreated} />}
-      {editingOrder && <EditOrderModal order={editingOrder} onClose={handleCloseEditOrder} onUpdated={handleOrderUpdated} />}
-      {deletingOrder && <DeleteOrderModal order={deletingOrder} onClose={handleCloseDeleteOrder} onDeleted={() => handleOrderDeleted(deletingOrder.id)} />}
+      <Suspense fallback={null}>
+        {editingOrder && (
+          <EditOrderModal order={editingOrder} onClose={handleCloseEditOrder} onUpdated={handleOrderUpdated} />
+        )}
+      </Suspense>
+      {deletingOrder && (
+        <DeleteOrderModal order={deletingOrder} onClose={handleCloseDeleteOrder} onDeleted={() => handleOrderDeleted(deletingOrder.id)} />
+      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import type { ProtectedRouteProps } from "../types";
+import type { ProtectedRouteProps } from "../types/types";
 import { can } from "@/utils/rbac";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store";

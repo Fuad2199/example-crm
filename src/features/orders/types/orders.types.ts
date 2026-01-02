@@ -28,3 +28,15 @@ export interface Stats {
 }
 
 export type StatusFilter = 'all' | 'pending' | 'shipped' | 'delivered' | 'cancelled';
+
+export interface OrdersState {
+    orders: Order[];
+    searchTerm: string;
+    statusFilter: StatusFilter;
+    currentPage: number;
+    selectedOrder: Order | null;
+    editingOrder: Order | null;
+    deletingOrder: Order | null;
+    loading: boolean;
+    error: string | null;
+}

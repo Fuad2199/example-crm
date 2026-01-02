@@ -1,6 +1,6 @@
 // src/store/auth/loginThunk.ts
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { type LoginResponse, type LoginPayload } from "../types";
+import { type LoginResponse, type LoginPayload } from "../types/types";
 import { authService } from "../services/auth.service";
 
 export const loginThunk = createAsyncThunk<LoginResponse, LoginPayload, {rejectValue: string}>(

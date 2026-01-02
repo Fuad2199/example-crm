@@ -5,7 +5,7 @@ import { FaGithub } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { Button, Checkbox, Input, Label } from "@/components/ui";
-import type { LoginPayload } from "@/features/auth/types";
+import type { LoginPayload } from "@/features/auth/types/types";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { loginThunk } from "../store/loginThunk";
 

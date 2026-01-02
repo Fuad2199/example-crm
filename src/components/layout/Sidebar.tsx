@@ -33,11 +33,15 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                             className="dark:hidden"
                             src={logoLight}
                             alt="Logoipsum"
+                            height={40}
+                            width={40}
                         />
                         <img
                             className="hidden dark:block"
                             src={logoDark}
                             alt="Logoipsum"
+                            height={40}
+                            width={40}
                         />
                         {!collapsed && (
                             <p className="text-lg font-medium text-slate-900 transition-colors dark:text-slate-50">

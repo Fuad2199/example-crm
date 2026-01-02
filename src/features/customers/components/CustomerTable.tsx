@@ -1,5 +1,5 @@
 import { PencilLine, Trash } from 'lucide-react';
-import type { Customer } from '../types';
+import type { Customer } from '../types/customer.types';
 
 export interface CustomerTableProps {
     customers: Customer[]; // optional, default contactsData istifadə olunacaq
@@ -32,7 +32,7 @@ const CustomersTable: React.FC<CustomerTableProps> = ({ customers }) => {
                                     <img src={customer.avatar} alt={customer.name} className="w-10 h-10 rounded-full object-cover" />
                                     <figcaption className="flex flex-col">
                                         <span className="font-medium text-slate-900 dark:text-slate-50">{customer.name}</span>
-                                        <span className="text-sm text-slate-600 dark:text-slate-400">{customer.position}</span>
+                                        <span className="text-sm text-slate-600 dark:text-slate-400">{customer.status}</span>
                                     </figcaption>
                                 </figure>
                             </td>
@@ -50,7 +50,7 @@ const CustomersTable: React.FC<CustomerTableProps> = ({ customers }) => {
                             <td className="table-cell">
                                 <span
                                     className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                        customer.status === 'Active'
+                                        customer.status === "active"
                                             ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100'
                                             : 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
                                     }`}
@@ -58,7 +58,7 @@ const CustomersTable: React.FC<CustomerTableProps> = ({ customers }) => {
                                     {customer.status}
                                 </span>
                             </td>
-                            <td className="table-cell text-slate-600 dark:text-slate-400">{customer.lastContacted}</td>
+                            <td className="table-cell text-slate-600 dark:text-slate-400">{customer.lastActivity}</td>
 
                             {/* Actions */}
                             <td className="table-cell">

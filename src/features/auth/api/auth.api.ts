@@ -1,4 +1,4 @@
-import { type LoginPayload, type LoginResponse, type User } from "@/features/auth/types";
+import { type LoginPayload, type LoginResponse, type User } from "@/features/auth/types/types";
 
 const BASE_URL = "http://localhost:3000";
 

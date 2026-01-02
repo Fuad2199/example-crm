@@ -1,5 +1,5 @@
 import { loginUser, logoutUser } from "../api/auth.api";
-import type { LoginPayload, LoginResponse, User } from "../types";
+import type { LoginPayload, LoginResponse, User } from "../types/types";
 
 const ACCESS_TOKEN_KEY = "accessToken";
 const REFRESH_TOKEN_KEY = "refreshToken";
