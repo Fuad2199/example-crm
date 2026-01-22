@@ -24,19 +24,70 @@ export interface CustomersModalsProps {
   selectedCustomer: Customer | null;
   deleteOpen: boolean;
   customerName: string;
-
   onCloseModal: () => void;
   onSave: (data: Omit<Customer, "id">) => void;
-
   onCloseDelete: () => void;
   onConfirmDelete: () => void;
 }
-export interface CustomersFiltersProps {
-  searchQuery: string;
-  statusFilter: CustomerStatus | "all";
-  hasActiveFilters: boolean;
 
-  onSearch: (value: string) => void;
-  onStatusChange: (value: CustomerStatus | "all") => void;
-  onReset: () => void;
+export type AnalyticsProps = {
+    totalCustomers: number;
+    activeCustomers: number;
+    inactiveCustomers: number;
+    leadCustomers: number;
+    churnedCustomers: number;
+    conversionRate: string;
+    recentlyActive: number;
+};
+
+export interface CustomersFiltersProps {
+    searchQuery: string;
+    onSearch: (value: string) => void;
+    statusFilter: CustomerStatus | "all";
+    onStatusChange: (value: CustomerStatus) => void;
+    hasActiveFilters: boolean;
+    onReset: () => void;
 }
+export interface CustomerTableProps {
+  customers: Customer[];
+
+  sortField: SortField | null;
+  sortDirection: SortDirection;
+  onSort: (field: SortField) => void;
+
+  onEdit: (customer: Customer) => void;
+  onDelete: (customer: Customer) => void;
+}
+
+export interface CustomersTableSectionProps {
+  customers: Customer[];
+
+  sorting: {
+    sortField: SortField | null;
+    sortDirection: SortDirection;
+    onSort: (field: SortField) => void;
+  };
+
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    next: () => void;
+    prev: () => void;
+    reset?: () => void;
+  };
+
+  onEdit: (customer: Customer) => void;
+  onDelete: (customer: Customer) => void;
+  loading?: boolean;
+
+  totalCount?: number;
+}
+
+export type GetCustomersParams = {
+  page?: number;
+  limit?: number;
+  sortField?: SortField | undefined;
+  sortDirection?: SortDirection;
+  searchQuery?: string | undefined;
+  statusFilter?: CustomerStatus | 'all' | undefined;
+};

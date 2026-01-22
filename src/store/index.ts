@@ -6,22 +6,25 @@ import storage from "redux-persist/lib/storage"; // localStorage
 import authReducer from "../features/auth/store/authSlice";
 import orderReducer from "../features/orders/store/order.slices";
 import { ordersApi } from "@/features/orders/api/orders.api";
+import { customersApi } from "@/features/customers/api/customer.api";
+import { contactsApi } from "@/features/contacts/api/contacts.api";
 
 // Auth persist konfiqurasiyası
 const persistConfig = {
   key: "auth",
   storage,
-  blacklist: ["accessToken", "refreshToken"], // sensitive məlumatlar saxlanmır
+  blacklist: ["accessToken", "refreshToken"],
 };
 
 // Root reducer
 const rootReducers = combineReducers({
   auth: persistReducer(persistConfig, authReducer),
-  [ordersApi.reducerPath]: ordersApi.reducer, // RTK Query reducer
+  [ordersApi.reducerPath]: ordersApi.reducer,
+  [customersApi.reducerPath]: customersApi.reducer,
+  [contactsApi.reducerPath]: contactsApi.reducer,
   orderUI: orderReducer,
 });
 
-// Store
 export const store = configureStore({
   reducer: rootReducers,
   middleware: (getDefaultMiddleware) =>
@@ -33,7 +36,7 @@ export const store = configureStore({
           "persist/REGISTER",
         ],
       },
-    }).concat(ordersApi.middleware), // RTK Query middleware əlavə olunur
+    }).concat(ordersApi.middleware, customersApi.middleware, contactsApi.middleware), // RTK Query middleware əlavə olunur
     devTools: true,
 });
 

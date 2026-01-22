@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
-import logoLight from '../../assets/logo-light.svg';
-import logoDark from '../../assets/logo-dark.svg';
+import logoLight from '../../assets/sales-crm.png';
+import logoDark from '../../assets/sales-crm-dark.png';
 import { navbarLinks } from '../../constants';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/cn';
@@ -33,22 +33,17 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                             className="dark:hidden"
                             src={logoLight}
                             alt="Logoipsum"
-                            height={40}
-                            width={40}
+                            height={100}
+                            width={100}
                         />
                         <img
                             className="hidden dark:block"
                             src={logoDark}
                             alt="Logoipsum"
-                            height={40}
-                            width={40}
+                            height={100}
+                            width={100}
                         />
-                        {!collapsed && (
-                            <p className="text-lg font-medium text-slate-900 transition-colors dark:text-slate-50">
-                                Example CRM
-                            </p>
-                        )}
-                        <figcaption></figcaption>
+                        
                     </figure>
                 </a>
 

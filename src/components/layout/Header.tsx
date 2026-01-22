@@ -41,7 +41,7 @@ export const Header = ({ collapsed, setCollapsed }: HeaderProps) => {
             <nav className="flex w-full justify-between gap-x-3">
                 {/* Left */}
                 <div className="flex items-center gap-x-3">
-                    <button onClick={() => setCollapsed(!collapsed)} aria-label="Toggle sidebar">
+                    <button className='cursor-pointer' onClick={() => setCollapsed(!collapsed)} aria-label="Toggle sidebar">
                         <Menu />
                     </button>
 
@@ -65,9 +65,9 @@ export const Header = ({ collapsed, setCollapsed }: HeaderProps) => {
                     ) : isAuthenticated ? (
                         <DropdownMenu modal={false}>
                             <DropdownMenuTrigger asChild>
-                                <button className="size-10 rounded-full overflow-hidden">
+                                <button className="size-10 rounded-full overflow-hidden cursor-pointer">
                                     {user?.avatar ? (
-                                        <img width={40} height={40} src={user.avatar} alt={user.name} />
+                                        <img width={40} height={40} src={user.avatar} title={user.name} alt={user.name} />
                                     ) : (
                                         <div className="flex size-full items-center justify-center bg-blue-500 text-white">
                                             {user?.name?.charAt(0)}
@@ -77,10 +77,10 @@ export const Header = ({ collapsed, setCollapsed }: HeaderProps) => {
                             </DropdownMenuTrigger>
 
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={handleLogout}>
+                                <DropdownMenuItem className='cursor-pointer' onClick={handleLogout}>
                                     <LogOut size={16} /> Logout
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => navigate('/settings')}>
+                                <DropdownMenuItem className='cursor-pointer' onClick={() => navigate('/settings')}>
                                     <Settings size={16} /> Settings
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
