@@ -5,17 +5,14 @@ import type { SearchFilterOption } from "./searchFilter.types";
 interface SearchFilterProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
-
   filterValue: string;
   onFilterChange: (value: string) => void;
-
   filterOptions: SearchFilterOption[];
 }
 
 export const SearchFilter: React.FC<SearchFilterProps> = ({
   searchTerm,
   onSearchChange,
-
   filterValue,
   onFilterChange,
   filterOptions,

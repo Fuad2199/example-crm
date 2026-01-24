@@ -5,7 +5,7 @@ import CustomersFilters from '../components/customers-filters';
 import { customersData } from '@/constants';
 import TableSection from '../components/table-section';
 
-export default function CustomersTableSection({
+export default function TestCustomersTableSection({
     sorting,
     pagination,
 }: CustomersTableSectionProps) {

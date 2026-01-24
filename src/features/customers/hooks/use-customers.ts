@@ -9,37 +9,44 @@ import {
 } from '../api/customer.api';
 
 const useCustomers = () => {
-    // filters
+    
+    // Local UI state for filtering and sorting
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [statusFilter, setStatusFilter] = useState<CustomerStatus | 'all'>('all');
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const [sortField, setSortField] = useState<SortField | null>(null);
     const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+    
+    // Pagination state
+    const [itemsPerPage] = useState<number>(10);
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
-    // pagination
-    const itemsPerPage = 10;
-
+    // Fetch customers with RTK Query (server-side filtering, sorting, pagination)
     const { data, isLoading } = useGetCustomersQuery({
         page: currentPage,
         limit: itemsPerPage,
         sortField: sortField ?? undefined,
         sortDirection,
-        searchQuery: searchQuery || undefined,
+        searchQuery: searchQuery,
         statusFilter: statusFilter !== 'all' ? statusFilter : undefined,
     });
+
+    // RTK Query mutations
     const [addCustomer] = useAddCustomerMutation();
     const [updateCustomer] = useUpdateCustomerMutation();
     const [deleteCustomer] = useDeleteCustomerMutation();
 
-    // modal states
+    // Add/Edit modal state
     const [modalOpen, setModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
+    // Delete confirmation modal state
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [toDelete, setToDelete] = useState<Customer | null>(null);
 
+    // Centralized action handlers
     const handlers = {
+        // Create new customer
         addCustomer: async (data: Omit<Customer, 'id'>) => {
             try {
                 await addCustomer(data).unwrap();
@@ -52,11 +59,15 @@ const useCustomers = () => {
                 console.error(err);
             }
         },
+
+        // Open edit modal with selected customer
         editCustomer: (customer: Customer) => {
             setModalMode('edit');
             setSelectedCustomer(customer);
             setModalOpen(true);
         },
+
+        // Save customer (add or update based on mode)
         saveCustomer: async (data: Omit<Customer, 'id'>) => {
             if (modalMode === 'add') {
                 await addCustomer(data);
@@ -67,10 +78,14 @@ const useCustomers = () => {
             }
             setModalOpen(false);
         },
+
+        // Open delete confirmation modal
         askDelete: (customer: Customer) => {
             setToDelete(customer);
             setDeleteOpen(true);
         },
+
+        // Confirm and execute delete
         confirmDelete: async () => {
             if (!toDelete) return;
             await deleteCustomer(toDelete.id);
@@ -79,8 +94,12 @@ const useCustomers = () => {
         },
     };
 
+    // Public API of the hook
     return {
+        // Data layer
         data: { customers: data?.data ?? [], total: data?.total ?? 0, isLoading },
+
+        // Filter controls
         filters: {
             searchQuery,
             statusFilter,
@@ -99,6 +118,8 @@ const useCustomers = () => {
                 setCurrentPage(1);
             },
         },
+
+        // Modal controls
         modals: {
             modalOpen,
             modalMode,
@@ -110,6 +131,8 @@ const useCustomers = () => {
             onCloseDelete: () => setDeleteOpen(false),
             onConfirmDelete: handlers.confirmDelete,
         },
+
+        // Sorting logic
         sorting: {
             sortField,
             sortDirection,
@@ -122,6 +145,8 @@ const useCustomers = () => {
                 }
             },
         },
+
+        // Pagination helpers
         pagination: {
             currentPage,
             totalPages: Math.ceil((data?.total ?? 0) / itemsPerPage),

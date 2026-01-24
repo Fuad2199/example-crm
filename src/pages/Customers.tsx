@@ -1,12 +1,11 @@
 import CustomersAnalytics from '@/features/customers/components/customers-analytics';
-import CustomersFilters from '@/features/customers/components/customers-filters';
 import CustomerHeaders from '@/features/customers/components/customers-header';
 import { CustomerModal } from '@/features/customers/components/customers-modal';
-import { CustomersTableSection } from '@/features/customers/components/customers-table-section';
+import CustomersTableSection from '@/features/customers/components/customers-table-section';
 import useCustomers from '@/features/customers/hooks/use-customers';
 
 const Customers = () => {
-    const { modals, handlers, filters, data, pagination, sorting } = useCustomers();
+    const { modals, handlers, data, pagination, sorting } = useCustomers();
 
     const { customers, total, isLoading } = data;
 
@@ -51,15 +50,6 @@ const Customers = () => {
                                 conversionRate: '—',
                                 recentlyActive: 0,
                             }}
-                        />
-
-                        <CustomersFilters
-                            searchQuery={filters.searchQuery}
-                            statusFilter={filters.statusFilter}
-                            onSearch={filters.onSearch}
-                            onStatusChange={filters.onStatusChange}
-                            onReset={filters.onReset}
-                            hasActiveFilters={filters.hasActiveFilters}
                         />
 
                         <CustomersTableSection

@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { Customer, GetCustomersParams } from '../types/customer.types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/';
 
 export const customersApi = createApi({
     reducerPath: 'customersApi',
@@ -25,11 +25,15 @@ export const customersApi = createApi({
                     params.append('q', searchQuery);
                 }
 
+                console.log('searchQuery:', searchQuery)
+
                 if (statusFilter && statusFilter !== 'all') {
                     params.append('status', statusFilter);
                 }
 
-                return `customers?${params.toString()}`
+                const url = `/customers?${params.toString()}`;
+                console.log('FULL URL:', url);
+                return url;
             },
             transformResponse: (response: Customer[], meta) => {
               const total = Number(meta?.response?.headers.get('X-Total-Count') ?? response.length);

@@ -1,6 +1,7 @@
 import React from 'react';
-import { OrdersTableRowActions } from './OrdersTableRowActions';
 import type { OrdersTableProps } from '../types/orders.types';
+import { Edit, Eye, X } from 'lucide-react';
+import { RowActions } from '../../../shared/ui/table/RowActions';
 
 export const OrdersTable: React.FC<OrdersTableProps> = ({
   orders,
@@ -13,7 +14,7 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
       <table className="min-w-full divide-y divide-gray-200">
 
         {/* orders table header */}
-        <thead className="bg-gray-50">
+        <thead className="bg-gray-50 border border-gray-300 shadow-md relative overflow-auto">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:bg-slate-900 dark:text-slate-50 uppercase tracking-wider">
               Order ID
@@ -37,7 +38,7 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
         </thead>
 
         {/* orders table content */}
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-white divide-y divide-gray-200 border border-gray-300 shadow-sm">
           {orders.map(order => (
             <tr key={order.id}>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:bg-slate-900 dark:text-slate-50">
@@ -78,11 +79,28 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
               </td>
 
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:bg-slate-900 dark:text-slate-50">
-                <OrdersTableRowActions
-                  order={order}
-                  onView={onViewOrder}
-                  onEdit={onEditOrder}
-                  onDelete={onDeleteOrder}
+                <RowActions
+                  row={order}
+                  actions={[
+                    {
+                      icon: <Eye size={16} />,
+                      label: "View Order",
+                      onClick: onViewOrder,
+                      variant: "primary",
+                    },
+                    {
+                      icon: <Edit size={16} />,
+                      label: "Edit Order",
+                      onClick: onEditOrder,
+                      variant: "warning",
+                    },
+                    {
+                      icon: <X size={16} />,
+                      label: "Delete Order",
+                      onClick: onDeleteOrder,
+                      variant: "danger",
+                    },
+                  ]}
                 />
               </td>
             </tr>
